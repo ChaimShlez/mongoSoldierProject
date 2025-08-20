@@ -34,7 +34,7 @@ spec:
             - name: MONGO_INITDB_ROOT_PASSWORD
               value: secretpassword
             - name: MONGO_INITDB_DATABASE
-              value: mydb
+              value: enemy_soldiers
           volumeMounts:
             - name: mongodb-storage
               mountPath: /data/db

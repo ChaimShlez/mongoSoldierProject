@@ -13,11 +13,12 @@ class ConnectionWrapper:
 
         )
         self.db = self.client[os.getenv("MONGODB_DATABASE","mydatabase")]
+        self.collection=self.db[os.getenv("MONGO_COLLECTION","soldier_details")]
 
 
 
-    def get_collection(self, name):
-        return self.db[name]
+    def get_collection(self):
+        return self.collection
 
 
 

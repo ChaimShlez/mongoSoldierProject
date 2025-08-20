@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: data-loader-mongo
+  name: soldier
 spec:
   replicas: 1
   selector:
@@ -14,12 +14,12 @@ spec:
     spec:
       containers:
       - name: soldier
-        image: chaim022/data_loader_mongo:4
+        image: chaim022/soldier:6
         ports:
         - containerPort: 8000
         env:
         - name: MONGODB_HOST
-          value: mongodb
+          value: soldier-mongodb
         - name: MONGODB_PORT
           value: "27017"
         - name: MONGODB_USER
@@ -27,7 +27,10 @@ spec:
         - name: MONGODB_PASSWORD
           value: secretpassword
         - name: MONGODB_DATABASE
-          value: mydb
+          value: enemy_soldiers
+        - name: MONGO_COLLECTION
+          value: soldier_details
+
 
 ---
 apiVersion: v1

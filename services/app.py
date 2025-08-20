@@ -15,7 +15,7 @@ class SoldierData(BaseModel):
     rank: str
 
 @app.post("/addSoldier")
-async def insert_soldier(data: SoldierData):
+def insert_soldier(data: SoldierData):
     print("Received data:", data)
     try:
         return soldier_logic.create_soldier(data)
@@ -24,7 +24,7 @@ async def insert_soldier(data: SoldierData):
 
 
 @app.get("/getSoldiers")
-async def get_soldiers():
+def get_soldiers():
     try:
        return soldier_logic.get_soldiers()
     except Exception as e:
@@ -32,7 +32,7 @@ async def get_soldiers():
 
 
 @app.put('/putSoldier/{soldier_id}')
-async def update_soldier(soldier_id: int, data: SoldierData):
+def update_soldier(soldier_id: int, data: SoldierData):
     try:
         return soldier_logic.update_solider(soldier_id,data)
     except Exception as e:
@@ -43,7 +43,7 @@ async def update_soldier(soldier_id: int, data: SoldierData):
 
 
 @app.delete('/deleteSoldier/{soldier_id}')
-async def delete_soldier(soldier_id:int):
+def delete_soldier(soldier_id:int):
     try:
         return soldier_logic.delete_solider(soldier_id)
     except Exception as e:
