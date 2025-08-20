@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: soldier-mongodb
+spec:
+  selector:
+    matchLabels:
+      app: soldier-mongodb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: soldier-mongodb
+    spec:
+      containers:
+        - name: soldier-mongodb
+          image: docker.io/library/mongo:7.0.23
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: admin
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: secretpassword
+            - name: MONGO_INITDB_DATABASE
+              value: mydb
+          volumeMounts:
+            - name: mongodb-storage
+              mountPath: /data/db
+      volumes:
+        - name: mongodb-storage
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: soldier-mongodb
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: soldier-mongodb

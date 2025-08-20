@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-loader-mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: soldier
+  template:
+    metadata:
+      labels:
+        app: soldier
+    spec:
+      containers:
+      - name: soldier
+        image: chaim022/data_loader_mongo:4
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MONGODB_HOST
+          value: mongodb
+        - name: MONGODB_PORT
+          value: "27017"
+        - name: MONGODB_USER
+          value: admin
+        - name: MONGODB_PASSWORD
+          value: secretpassword
+        - name: MONGODB_DATABASE
+          value: mydb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: soldier
+spec:
+  selector:
+    app: soldier
+  ports:
+  - port: 8000
+    targetPort: 8000

@@ -13,16 +13,22 @@ class SoldierLogic:
 
 
     def create_soldier(self,soldier_data):
-        soldier = Soldier(soldier_data.soldierId,soldier_data.
+        soldier = Soldier(soldier_data.soldierID,soldier_data.
            firstName,soldier_data.lastName,soldier_data.phoneNumber,soldier_data.rank)
 
-        self.insert_soldier_to_data(soldier)
+        return self.insert_soldier_to_data(soldier)
 
     def insert_soldier_to_data(self,soldier):
+        if  self.queries.is_exist(soldier._soldier_id):
+            return "soldier is exist"
 
-       soldier= {"soldierID":soldier._soldier_id,"firstName":soldier._firstName,"lastName":soldier._lastName,
-                 "phoneNumber":soldier._phoneNumber,"rank":soldier._rank}
-       self.queries.insert(soldier)
+        else:
+            soldier = {"soldierID": soldier._soldier_id, "firstName": soldier._firstName, "lastName": soldier._lastName,
+                       "phoneNumber": soldier._phoneNumber, "rank": soldier._rank}
+            self.queries.insert(soldier)
+            return "The insertion was successful."
+
+
 
 
 
@@ -31,19 +37,26 @@ class SoldierLogic:
 
 
     def delete_solider(self,soldier_id):
+        result = self.queries.delete(soldier_id)
 
-        if self.queries.is_exist(soldier_id):
-            self.queries.delete(soldier_id)
+        if result.deleted_count==1:
+            return "The deletion was successful."
         else:
             return "soldier do'nt exist"
+
 
     def update_solider(self, soldier_id,soldier):
-
-        if self.queries.is_exist(soldier_id):
-            soldier_dict = soldier.dict()
-            self.queries.update(soldier_id, soldier_dict)
+        soldier_dict = soldier.dict()
+        result=self.queries.update(soldier_id, soldier_dict)
+        if result.matched_count==1:
+            return "The update was successful."
         else:
             return "soldier do'nt exist"
+
+
+
+
+
 
 
 
